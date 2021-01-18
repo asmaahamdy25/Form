@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="create-container">
+        Add Form Object
+        <textarea [(ngModel)]="formData" rows="1" cols="50"></textarea>
+    </div>
+    <form class="form-container" [formGroup]="myFormGroup"  *ngIf="getData().length > 0">
+        <ng-container *ngFor="let item of getData()">
+            <ng-container [ngSwitch]="item.type" >
+            <div class="form-group" *ngSwitchCase="['text','number','email','password','phone', 'date'].includes(item.type) ? item.type : ''">
+                <label [for]="item.label">{{item.label}} </label>
+                <input [formControlName]="item.id" [type]="item.type" class="form-control" [id]="item.id"
+                     [placeholder]="item.placeholder">
+            </div>
+
+            <div class="form-group" *ngSwitchCase="'select'">
+                <label [for]="item.label">{{item.label}} </label>
+                <select class="form-control" [id]="item.id" [formControlName]="item.id">
+                 <option *ngFor="let item of item.options">{{item}}</option>
+                </select>
+              </div>
+            <div class="form-group" *ngSwitchCase="'textarea'">
+                <label [for]="item.label">{{item.label}} </label>
+                <textarea class="form-control" [id]="item.id" [placeholder]="item.placeholder"[formControlName]="item.id" rows="3"></textarea>
+              </div>
+
+              <div class="form-check" *ngSwitchCase="'checkbox'">
+                <input type="checkbox" class="form-check-input" [id]="item.id" [formControlName]="item.id" >
+                <label class="form-check-label" [for]="item.label">{{item.label}} </label>
+              </div>
+     
+          <div class="form-group" *ngSwitchCase="'radio'">
+            <label class="form-check-label" [for]="item.label">{{item.label}} </label>
+            <div *ngFor="let option of item.options">
+                <input  type="radio" [value]="option" [name]="item.id" [formControlName]="item.id">
+                <label class="form-check-label" [for]="option">{{option}}</label>
+             </div>         
+            </div>
+            <button *ngSwitchCase="'submit'" type="submit" (click)="submit()"  class="btn btn-primary">{{item.label}}</button>
+            <button  *ngSwitchCase="'cancel'"type="reset" (click)="cancel()"  class="btn btn-danger">{{item.label}}</button>
+        </ng-container>
+        </ng-container>
+        </form>
+
+
+</div>
